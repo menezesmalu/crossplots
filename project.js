@@ -12,6 +12,10 @@ var points = [];
 var circleRadius = 4;
 var circles = [];
 var clickCount = 0;
+var clicked;
+var btnpoints = true;
+var btnlines = true;
+
 
 function resizeCanvas(width, height) {
     canvas.width = width;
@@ -41,6 +45,7 @@ function drawPoint(x, y){
 canvas.addEventListener('mousedown', function(event) {
     clickCount++;
     if (clickCount == 1) {
+    	clicked = true;
         singleClickTimer = setTimeout(function() {
         	console.log("single");
             clickCount = 0;
@@ -53,6 +58,7 @@ canvas.addEventListener('mousedown', function(event) {
         deletePoint(event);
     }
 }, false);
+//canvas.addEventListener('mousemove', dragPoint(event), false);
 
 function getPoint(event){
 	//define the point
@@ -85,17 +91,62 @@ function deletePoint(event){
 	}
 }
 
+function btnPoints(){
+	//nao mostrar pontos
+	if(btnpoints){
+		console.log("tira os pontos")
+		clearScreen();
+		for(var i = 1; i < circles.length; i++){
+			if(btnlines)
+				drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
+		}
+		btnpoints = !btnpoints;
+	} else { // mostrar pontos
+		for(var i = 0; i < circles.length; i++)
+				var c = drawPoint(pointsX[i], pointsY[i]);
+		btnpoints = !btnpoints;
+	}
+}
+
+function btnLines(){
+	//nao mostrar pontos
+	if(btnlines){
+		clearScreen();
+		for(var i = 0; i < circles.length; i++){
+			if(btnpoints)
+				var c = drawPoint(pointsX[i], pointsY[i]);
+		}
+		btnlines = !btnlines;
+	} else { // mostrar pontos
+		for(var i = 1; i < circles.length; i++)
+			drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
+		btnlines = !btnlines;
+	}
+}
+/*function dragPoint(event){
+	if(!clicked) return;
+	var x = event.x - rect.left;
+	var y = event.y - rect.top;
+	for(var i = 0; i < circles.length; i++){
+		if(Math.sqrt((x - pointsX[i])*(x - pointsX[i])+ (y - pointsY[i])*(y - pointsY[i])) < circleRadius){
+	
+}*/
+
 function resetScreen(){
+	clearScreen();
+	for(var i = 0; i < circles.length; i++){
+		var c = drawPoint(pointsX[i], pointsY[i]);
+		if(i > 0) drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
+	}
+}
+
+function clearScreen(){
 	ctx.beginPath();
 	ctx.strokeStyle = color.invisible;
 	ctx.fillStyle = color.invisible;
 	ctx.rect(0, 0, canvas.width, canvas.height);
 	ctx.stroke();
 	ctx.fill();
-	console.log(circles.length);
-	for(var i = 0; i < circles.length; i++){
-		console.log("aa");		
-		var c = drawPoint(pointsX[i], pointsY[i]);
-		if(i > 0) drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
-	}
 }
+
+
