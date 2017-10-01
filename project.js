@@ -19,7 +19,7 @@ var clickCount = 0;
 var clicked;
 var btnpoints = true;
 var btnlines = true;
-var move = false;
+var move = -1;
 var circle = {
 	x: 0,
 	y: 0,
@@ -63,12 +63,13 @@ function drawPoint(x, y){
 }
 
 canvas.addEventListener('mousedown', function(event) {
+	console.log(event);
     clickCount++;
     if (clickCount == 1) {
     	clicked = true;
         singleClickTimer = setTimeout(function() {
             clickCount = 0;
-            if(move -1) 
+            if(move == -1) 
             	getPoint(event);
         }, 400);
     } else if (clickCount == 2) {
@@ -78,7 +79,8 @@ canvas.addEventListener('mousedown', function(event) {
     }
 }, false);
 
-canvas.addEventListener('mousedown', function(event) {   
+canvas.addEventListener('mousedown', function(event) {
+	console.log("mousedown");
 	move = isInCircle(event) 
 });
 
@@ -92,7 +94,7 @@ canvas.addEventListener('mousemove', function(event) {
 
 canvas.addEventListener('mouseup', function(event) {
 	//resetScreen();
-    move = false;
+    move = -1;
 });
 
 function getPoint(event){
