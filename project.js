@@ -2,6 +2,11 @@ var color = {
 	circles: "#7B68EE",
 	lines: "black",
 	invisible: "#D3D3D3",
+	button: "buttonface",
+	button2: "red",
+	text:"black",
+	text2: "white",
+
 }
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -93,15 +98,20 @@ function deletePoint(event){
 
 function btnPoints(){
 	//nao mostrar pontos
+	var btn = document.getElementById('pontos');
 	if(btnpoints){
-		console.log("tira os pontos")
+		btn.style.backgroundColor = color.button2;
+		btn.style.color = color.text2;
 		clearScreen();
 		for(var i = 1; i < circles.length; i++){
-			if(btnlines)
+			if(btnlines){
 				drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
+			}
 		}
 		btnpoints = !btnpoints;
 	} else { // mostrar pontos
+		btn.style.backgroundColor = color.button;
+		btn.style.color = color.text;
 		for(var i = 0; i < circles.length; i++)
 				var c = drawPoint(pointsX[i], pointsY[i]);
 		btnpoints = !btnpoints;
@@ -109,8 +119,11 @@ function btnPoints(){
 }
 
 function btnLines(){
+	var btn = document.getElementById('poligonal');
 	//nao mostrar pontos
 	if(btnlines){
+		btn.style.backgroundColor = color.button2;
+		btn.style.color = color.text2;
 		clearScreen();
 		for(var i = 0; i < circles.length; i++){
 			if(btnpoints)
@@ -118,6 +131,8 @@ function btnLines(){
 		}
 		btnlines = !btnlines;
 	} else { // mostrar pontos
+		btn.style.backgroundColor = color.button;
+		btn.style.color = color.text;
 		for(var i = 1; i < circles.length; i++)
 			drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
 		btnlines = !btnlines;
