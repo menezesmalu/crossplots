@@ -34,6 +34,16 @@ function getPosition(event){
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = color.lines;
 	ctx.stroke();
+
+	if(pointsX.length > 1){
+		ctx.beginPath();
+		ctx.strokeStyle = color.lines;
+		ctx.lineWidth = 1;
+		ctx.moveTo(pointsX[pointsX.length -2], pointsY[pointsY.length-2]);
+		ctx.lineTo(pointsX[pointsX.length-1], pointsY[pointsY.length-1]);
+		ctx.stroke();
+	}
+
 }
 
 
