@@ -27,7 +27,7 @@ function drawLine(x, y, xp, yp, colorpick){
 	ctx.stroke();
 }
 
-function drawPoints(x, y){
+function drawPoint(x, y){
 	ctx.beginPath();
 	var c = ctx.arc(x, y, circleRadius, 0, 2*Math.PI, false);
 	ctx.fillStyle = color.circles;
@@ -35,7 +35,7 @@ function drawPoints(x, y){
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = color.lines;
 	ctx.stroke();
-	circles.push(c);
+	return c;
 }
 
 canvas.addEventListener('mousedown', function(event) {
@@ -61,7 +61,8 @@ function getPoint(event){
 	pointsX.push(x);
 	pointsY.push(y);
 	//design the point
-	drawPoints(x, y);
+	var c = drawPoint(x, y);
+	circles.push(c);
 
 	if(circles.length > 1){
 		drawLine(x, y, pointsX[pointsX.length-2], pointsY[pointsY.length-2], color.lines);
@@ -75,26 +76,26 @@ function deletePoint(event){
 		if(Math.sqrt((x - pointsX[i])*(x - pointsX[i])+ (y - pointsY[i])*(y - pointsY[i])) < circleRadius){
 			console.log("delete");
 			//deleting the double clicked point
-			var xd = pointsX[i];
-			var yd = pointsY[i];
 			pointsX.splice(i, 1);
 			pointsY.splice(i, 1);
 			circles.splice(i, 1);
 			console.log(circles.length);
-			ctx.beginPath();
-			ctx.clearRect(xd - circleRadius -1, yd - circleRadius - 1, 2*circleRadius+2, 2*circleRadius+2);
-			drawLine(xd, yd, pointsX[i-1], pointsY[i-1], color.invisible);
-			drawLine(pointsX[i+1], pointsY[i+1],xd, yd, color.invisible);
-
-
-			//conecting the points that where before and after the deleted one.
-			ctx.beginPath();
-			ctx.strokeStyle = color.lines;
-			ctx.lineWidth = 1;
-			ctx.moveTo(pointsX[i], pointsY[i]);
-			ctx.lineTo(pointsX[i-1], pointsY[i-1]);
-			ctx.stroke();
-			console.log(circles);
+			resetScreen();
 		}
+	}
+}
+
+function resetScreen(){
+	ctx.beginPath();
+	ctx.strokeStyle = color.invisible;
+	ctx.fillStyle = color.invisible;
+	ctx.rect(0, 0, canvas.width, canvas.height);
+	ctx.stroke();
+	ctx.fill();
+	console.log(circles.length);
+	for(var i = 0; i < circles.length; i++){
+		console.log("aa");		
+		var c = drawPoint(pointsX[i], pointsY[i]);
+		if(i > 0) drawLine(pointsX[i], pointsY[i], pointsX[i-1], pointsY[i-1], color.lines);
 	}
 }
