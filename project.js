@@ -26,7 +26,6 @@ var circle = {
 	radius: circleRadius,
 }
 
-
 function resizeCanvas(width, height) {
     canvas.width = width;
     canvas.height = height;
@@ -69,7 +68,7 @@ canvas.addEventListener('mousedown', function(event) {
     	clicked = true;
         singleClickTimer = setTimeout(function() {
             clickCount = 0;
-         //   if(!move) 
+            if(move -1) 
             	getPoint(event);
         }, 400);
     } else if (clickCount == 2) {
@@ -79,27 +78,23 @@ canvas.addEventListener('mousedown', function(event) {
     }
 }, false);
 
-/*canvas.addEventListener('mousedown', function(e) {
-    move = isInCircle(event);
+canvas.addEventListener('mousedown', function(event) {   
+	move = isInCircle(event) 
 });
 
-
 canvas.addEventListener('mousemove', function(event) {
-    if (move) {
-    	console.log("aaaa")
-    	var i = isInCircle(event);
-    	circle.x = event.offsetX;
-		circle.y = event.offsetY;
-        //ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawPoint(circle.x, circle.y);
+    if (move != -1) {
+    	pointsX[move] = event.offsetX;
+		pointsY[move] = event.offsetY;
+        resetScreen();
     }
 });
 
-canvas.addEventListener('mouseup', function(e) {
-	resetScreen();
+canvas.addEventListener('mouseup', function(event) {
+	//resetScreen();
     move = false;
 });
-*/
+
 function getPoint(event){
 	//define the point
 	var x = event.x - rect.left;
@@ -117,7 +112,6 @@ function getPoint(event){
 function deletePoint(event){
 	var i = isInCircle(event);
 	if(i != -1){
-	console.log("delete");
 		//deleting the double clicked point
 		pointsX.splice(i, 1);
 		pointsY.splice(i, 1);
