@@ -5,6 +5,7 @@ var color = {
 }
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var rect = canvas.getBoundingClientRect();
 var pointsX = [];
 var	pointsY = [];
 var points = [];
@@ -20,11 +21,11 @@ function resizeCanvas(width, height) {
 canvas.addEventListener("mousedown", getPosition, false);
 
 function getPosition(event){
-	var x = event.x;
-	var y = event.y;
+	var x = event.x - rect.left;
+	var y = event.y - rect.top;
 
-	x -= canvas.offsetLeft;
-	y -= canvas.offsetTop;
+	pointsX.push(x);
+	pointsY.push(y);
 
 	ctx.beginPath();
 	ctx.arc(x, y, circleRadius, 0, 2*Math.PI, false);
