@@ -1,9 +1,8 @@
-
-
 html,
 body{
 	margin: 10px; 
-	background-color: #D3D3D3;
+  background-color: #D3D3D3;
+  overflow: hidden;
 },
 canvas,
 #container
@@ -14,5 +13,5 @@ canvas,
   padding: 0;
   border: 0;
   border-color: black;
+  position: absolute;
 }
-

@@ -12,9 +12,34 @@
       exibir:
       <button class="botao" id="pontos" onclick="btnPoints()">Pontos de controle</button>
       <button class="botao" id="poligonal" onclick="btnLines()"> Poligonal</button>
-    <div id="container">
-      <canvas id="canvas" width="1300" height="1000" style="border:1px solid" background-color: #D3D3D3;></canvas>
-    </div>
+      <table>
+        <tr>
+          <td>Cross Plots Y</td><td>User input</td>
+        </tr>
+        <tr>
+          <td>
+            <div id="container">
+              <canvas id="canvas_y" width="500" height="280" style="border:1px solid" background-color: #D3D3D3;></canvas>
+            </div>
+          </td>
+          <td>
+            <div id="container">
+              <canvas id="canvas" width="500" height="280" style="border:1px solid" background-color: #D3D3D3;></canvas>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td></td><td>Cross Plots X</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div id="container">
+              <canvas id="canvas_x" width="500" height="280" style="border:1px solid" background-color: #D3D3D3;></canvas>
+            </div>
+          </td>
+        </tr>
+      </table>
   </body>
 </html>
 <script src="project.js"></script>
