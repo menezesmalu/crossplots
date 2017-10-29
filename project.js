@@ -1,3 +1,8 @@
+function assert(condition, message) {
+    if (!condition) {
+        throw message || "Assertion failed";
+    }
+}
 var color = {
 	points: "#7B68EE",
 	lines: "black",
@@ -31,10 +36,9 @@ var btnlines = true;
 var btnbezier = true;
 var move = -1;
 var width = 500;
-var height = 300;
+var height = 280;
 var valor = document.getElementById('input_av');
 var av = 100;
-//var const = 10;
 function resizeCanvas() {
 	for(i in canvas){
 		canvas[i].width = width;
@@ -74,6 +78,7 @@ function drawPoint(x, y, i){
 canvas[0], addEventListener('mousedown', event =>{
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
+	btnpoints = btnlines = btnbezier = true;
 	if(isInCircle(event) == -1){
 		getPoint(event);
 	} else {
@@ -105,7 +110,7 @@ function getPoint(event){
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
 	//design the point
-	if(x>0 && x <500 && y>0 && y<290){
+	if(x>0 && x <500 && y>0 && y<280){
 		var c = drawPoint(x, y,0);
 		points.push(c);
 		if(points.length > 1) 
@@ -149,7 +154,7 @@ function mostrar(){
 			c = drawPoint(pointsx[i].x, pointsx[i].y,2);
 		}
 	} if (btnbezier){
-		drawBezierCurve();
+		drawBezierCurve(av, color.bezier);
 	}
 
 }
@@ -161,8 +166,10 @@ function resetScreen(){
 
 
 function removeBezier(){
-	for(j in canvas)
-	ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
+	for(j in canvas) {
+		assert(width == canvas[j].width && height == canvas[j].height);
+		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
+	}
 	pointsy.splice(0,pointsy.length);
 	pointsx.splice(0,pointsx.length);
 	var x = width/(2*points.length);
@@ -170,8 +177,8 @@ function removeBezier(){
 	for(var i in points){
 		var c = drawPoint(points[i].x, points[i].y,0);
 		var cy = drawPoint(x, points[i].y, 1);
-		pointsy.push(cy);
 		var cx = drawPoint(points[i].x, y, 2);
+		pointsy.push(cy);
 		pointsx.push(cx);
 		x = x+width/(points.length);
 		y = y+height/(points.length);	
@@ -183,12 +190,7 @@ function removeBezier(){
 	}
 }
 
-function pot(a, b){
-	var potencia = 1;
-	for(var i = 0; i < b; i++)
-		potencia = potencia*a;
-	return potencia;
-}
+var pot = Math.pow
 function fatorial(n){
 	if(n == 1 || n ==0) return 1;
 	else return n*fatorial(n-1);
