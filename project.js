@@ -1,8 +1,8 @@
 var color = {
 	points: "#7B68EE",
 	lines: "black",
-	linescontrol: "red",
 	invisible: "#D3D3D3",
+	bezier: "red"
 }
 var canvas = [
 	document.getElementById('canvas'),
@@ -176,6 +176,25 @@ function resetScreen(){
 	getBezier();
 }
 
+function removeBezier(){
+	for(j in canvas)
+	ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
+pointsy.splice(0,pointsy.length);
+pointsx.splice(0,pointsx.length);
+for(var i in points){
+	var c = drawPoint(points[i].x, points[i].y,0);
+	var cy = drawPoint((width/points.length)*i, points[i].y, 1);
+	pointsy.push(cy);
+	var cx = drawPoint(points[i].x, (height/points.length)*i, 2);
+	pointsx.push(cx);	
+	if(i > 0) {
+		drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines, 0);
+		drawLine(pointsy[pointsy.length-1].x, pointsy[pointsy.length-1].y, pointsy[pointsy.length-2].x, pointsy[pointsy.length-2].y, color.lines,1);
+		drawLine(pointsx[pointsx.length-1].x, pointsx[pointsx.length-1].y, pointsx[pointsx.length-2].x, pointsx[pointsx.length-2].y, color.lines,2);
+	}
+}
+}
+
 function pot(a, b){
 	var potencia = 1;
 	for(var i = 0; i < b; i++)
@@ -218,11 +237,12 @@ function bezier(t){
 	pcontroley.push(b1);	
 	pcontrolex.push(b2);
 }
-function drawBezierCurve(av){
+function drawBezierCurve(av, colorpick){
+	console.log(colorpick);
 	for(var i = 1; i < pcontrole.length; i++){
-		drawLine(pcontrole[i-1].x, pcontrole[i-1].y,pcontrole[i].x, pcontrole[i].y, color.linescontrol, 0 );
-		drawLine(pcontroley[i-1].x, pcontroley[i-1].y,pcontroley[i].x, pcontroley[i].y, color.linescontrol, 1 );
-		drawLine(pcontrolex[i-1].x, pcontrolex[i-1].y,pcontrolex[i].x, pcontrolex[i].y, color.linescontrol, 2 );
+		drawLine(pcontrole[i-1].x, pcontrole[i-1].y,pcontrole[i].x, pcontrole[i].y, colorpick, 0 );
+		drawLine(pcontroley[i-1].x, pcontroley[i-1].y,pcontroley[i].x, pcontroley[i].y, colorpick, 1 );
+		drawLine(pcontrolex[i-1].x, pcontrolex[i-1].y,pcontrolex[i].x, pcontrolex[i].y, colorpick, 2 );
 	}
 }
 function getBezier(){
@@ -230,8 +250,13 @@ function getBezier(){
 	pcontroley.splice(0, pcontroley.length);
 	pcontrolex.splice(0, pcontrolex.length);
 	av = parseInt(valor.value);
-	for(var i = 1; i <= av; i++){
+	for(var i = 0; i <= av; i++){
 		bezier(i/av);
 	}
-	drawBezierCurve(av);
+	drawBezierCurve(av, color.bezier);
+}
+
+function changeBezier(){
+	removeBezier();
+	getBezier();
 }
