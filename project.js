@@ -6,7 +6,7 @@ var color = {
 	button: "buttonface",
 	button2: "red",
 	text:"black",
-	text2: "white",
+	text2: "white"
 }
 var canvas = [
 	document.getElementById('canvas'),
@@ -127,57 +127,51 @@ function getPoint(event){
 }
 
 //mudar isso dps  desenhar
-function btnPoints(){
-	//nao mostrar pontos
-	var btn = document.getElementById('pontos');
-	if(btnpoints){
-		btn.style.backgroundColor = color.button2;
-		btn.style.color = color.text2;
-		for(j in canvas)
-			ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
-		for(var i=1; i< points.length; i++){
-			if(btnlines){
-				drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines,0);
-				drawLine(pointsy[i].x, pointsy[i].y, pointsy[i-1].x, pointsy[i-1].y, color.lines,1);
-				drawLine(pointsx[i].x, pointsx[i].y, pointsx[i-1].x, pointsx[i-1].y, color.lines,2);
-			}
-		}
-	} else { // mostrar pontos
-		btn.style.backgroundColor = color.button;
-		btn.style.color = color.text;
-		for(var i in points){
-			var c = drawPoint(points[i].x, points[i].y, 0);
-			c = drawPoint(pointsy[i].x, pointsy[i].y, 1);
-			c = drawPoint(pointsx[i].x, pointsx[i].y,2);
-		}
+function btnClicked(botao){
+	var btn;
+	switch(botao){
+		case 'btnlines':
+			btn = document.getElementById('poligonal');
+			btnlines = !btnlines;
+			break;
+		case 'btnpoints':
+			btn = document.getElementById('pontos');
+			btnpoints = !btnpoints;	
+			break;
+		case 'btnbezier':
+			btn = document.getElementById('bezier');
+			!btnbezier;
+			break;
 	}
-	btnpoints = !btnpoints;
-}
-//mudar isso dps  desenhar
-function btnLines(){ //nao mostrar linhas
-	var btn = document.getElementById('poligonal');
-	if(btnlines){
+	console.log(btn.style.backgroundColor);
+	if(btn.style.backgroundColor === color.button){
+		console.log('entrou');
 		btn.style.backgroundColor = color.button2;
 		btn.style.color = color.text2;
-		for(j in canvas)
-			ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
-		for(var i in points){
-			if(btnpoints){
-				var c = drawPoint(points[i].x, points[i].y, 0);
-				c = drawPoint(pointsy[i].x, pointsy[i].y, 1);
-				c = drawPoint(pointsx[i].x, pointsx[i].y,2);
-			}
-		}
-	} else { // mostrar pontos
+	} else {
 		btn.style.backgroundColor = color.button;
 		btn.style.color = color.text;
+	}
+	mostrar();	
+}
+function mostrar(){
+	for(j in canvas)
+		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
+	if(btnlines){
 		for(var i=1; i< points.length; i++){
 			drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines,0);
 			drawLine(pointsy[i].x, pointsy[i].y, pointsy[i-1].x, pointsy[i-1].y, color.lines,1);
 			drawLine(pointsx[i].x, pointsx[i].y, pointsx[i-1].x, pointsx[i-1].y, color.lines,2);
 		}
 	}
-	btnlines = !btnlines;
+	if(btnpoints){
+		console.log(btnpoints);
+		for(var i in points){
+			var c = drawPoint(points[i].x, points[i].y, 0);
+			c = drawPoint(pointsy[i].x, pointsy[i].y, 1);
+			c = drawPoint(pointsx[i].x, pointsx[i].y,2);
+		}
+	}
 }
 
 
