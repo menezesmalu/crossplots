@@ -33,7 +33,7 @@ var move = -1;
 var width = 500;
 var height = 300;
 var valor = document.getElementById('input_av');
-var av = 100;
+var av;
 function resizeCanvas() {
 	for(i in canvas){
 		canvas[i].width = width;
@@ -167,13 +167,9 @@ function resetScreen(){
 		pointsy.push(cy);
 		var cx = drawPoint(points[i].x, (height/points.length)*i, 2);
 		pointsx.push(cx);	
-		if(i > 0) {
-			drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines, 0);
-			drawLine(pointsy[pointsy.length-1].x, pointsy[pointsy.length-1].y, pointsy[pointsy.length-2].x, pointsy[pointsy.length-2].y, color.lines,1);
-			drawLine(pointsx[pointsx.length-1].x, pointsx[pointsx.length-1].y, pointsx[pointsx.length-2].x, pointsx[pointsx.length-2].y, color.lines,2);
-		}
 	}
 	getBezier();
+	mostrar();
 }
 
 function pot(a, b){
