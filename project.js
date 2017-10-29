@@ -34,6 +34,7 @@ var width = 500;
 var height = 300;
 var valor = document.getElementById('input_av');
 var av = 100;
+//var const = 10;
 function resizeCanvas() {
 	for(i in canvas){
 		canvas[i].width = width;
@@ -154,45 +155,32 @@ function mostrar(){
 }
 
 function resetScreen(){
+	removeBezier();
+	getBezier();
+}
+
+
+function removeBezier(){
 	for(j in canvas)
-		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
+	ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
 	pointsy.splice(0,pointsy.length);
 	pointsx.splice(0,pointsx.length);
-	pcontrole.splice(0, pcontrole.length);
-	pcontroley.splice(0, pcontroley.length);
-	pcontrolex.splice(0, pcontrolex.length);
+	var x = width/(2*points.length);
+	var y = height/(2*points.length);
 	for(var i in points){
 		var c = drawPoint(points[i].x, points[i].y,0);
-		var cy = drawPoint((width/points.length)*i, points[i].y, 1);
+		var cy = drawPoint(x, points[i].y, 1);
 		pointsy.push(cy);
-		var cx = drawPoint(points[i].x, (height/points.length)*i, 2);
-		pointsx.push(cx);	
+		var cx = drawPoint(points[i].x, y, 2);
+		pointsx.push(cx);
+		x = x+width/(points.length);
+		y = y+height/(points.length);	
 		if(i > 0) {
 			drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines, 0);
 			drawLine(pointsy[pointsy.length-1].x, pointsy[pointsy.length-1].y, pointsy[pointsy.length-2].x, pointsy[pointsy.length-2].y, color.lines,1);
 			drawLine(pointsx[pointsx.length-1].x, pointsx[pointsx.length-1].y, pointsx[pointsx.length-2].x, pointsx[pointsx.length-2].y, color.lines,2);
 		}
 	}
-	getBezier();
-}
-
-function removeBezier(){
-	for(j in canvas)
-	ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
-pointsy.splice(0,pointsy.length);
-pointsx.splice(0,pointsx.length);
-for(var i in points){
-	var c = drawPoint(points[i].x, points[i].y,0);
-	var cy = drawPoint((width/points.length)*i, points[i].y, 1);
-	pointsy.push(cy);
-	var cx = drawPoint(points[i].x, (height/points.length)*i, 2);
-	pointsx.push(cx);	
-	if(i > 0) {
-		drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines, 0);
-		drawLine(pointsy[pointsy.length-1].x, pointsy[pointsy.length-1].y, pointsy[pointsy.length-2].x, pointsy[pointsy.length-2].y, color.lines,1);
-		drawLine(pointsx[pointsx.length-1].x, pointsx[pointsx.length-1].y, pointsx[pointsx.length-2].x, pointsx[pointsx.length-2].y, color.lines,2);
-	}
-}
 }
 
 function pot(a, b){
