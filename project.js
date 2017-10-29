@@ -33,7 +33,7 @@ var move = -1;
 var width = 500;
 var height = 300;
 var valor = document.getElementById('input_av');
-var av;
+var av = 10;
 function resizeCanvas() {
 	for(i in canvas){
 		canvas[i].width = width;
@@ -225,9 +225,10 @@ function getBezier(){
 	pcontrole.splice(0, pcontrole.length);
 	pcontroley.splice(0, pcontroley.length);
 	pcontrolex.splice(0, pcontrolex.length);
-	av = parseInt(valor.value);
-	for(var i = 1; i <= av; i++){
+	if (valor.value != av) {av = parseInt(valor.value);
+	for(var i = 0; i <= av; i++){
 		bezier(i/av);
 	}
 	drawBezierCurve(av);
+	}
 }
