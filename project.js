@@ -1,8 +1,3 @@
-function assert(condition, message) {
-    if (!condition) {
-        throw message || "Assertion failed";
-    }
-}
 var color = {
 	points: "#7B68EE",
 	lines: "black",
@@ -79,8 +74,6 @@ canvas[0], addEventListener('mousedown', event =>{
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
 	if(x>0 && x <500 && y>0 && y<280){
-		console.log("achou")
-	
 		btnpoints = btnlines = btnbezier = true;
 		if(isInCircle(event) == -1){
 			setPoint(event);
@@ -110,22 +103,17 @@ canvas[0].addEventListener('mouseup', function(event) {
 });
 
 function setPoint(event){
-	//define the point
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
-	//design the point
-	//if(x>0 && x <500 && y>0 && y<280){
-		var c = drawPoint(x, y,0);
-		points.push(c);
-		if(points.length > 1) 
-			drawLine(points[points.length-1].x, points[points.length-1].y, points[points.length-2].x, points[points.length-2].y, color.lines,0);
-		resetScreen();
-	//}
+	var c = drawPoint(x, y,0);
+	points.push(c);
+	if(points.length > 1) 
+		drawLine(points[points.length-1].x, points[points.length-1].y, points[points.length-2].x, points[points.length-2].y, color.lines,0);
+	resetScreen();
 }
 
 function btnClicked(botao){
 	var btn;
-	console.log("aa" + btnpoints, btnlines, btnbezier);
 	switch(botao){
 		case 'btnlines':
 			btn = document.getElementById('poligonal');
@@ -140,16 +128,13 @@ function btnClicked(botao){
 			btnbezier = !btnbezier;
 			break;
 	}
-	console.log("bb" + btnpoints, btnlines, btnbezier);
 	mostrar();	
 	
 }
 function mostrar(){
-	console.log("cc" + btnpoints, btnlines, btnbezier);
 	for(j in canvas)
 		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
 	if(btnlines){
-		console.log("iiih")
 		for(var i=1; i< points.length; i++){
 			drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines,0);
 			drawLine(pointsy[i].x, pointsy[i].y, pointsy[i-1].x, pointsy[i-1].y, color.lines,1);
@@ -164,7 +149,6 @@ function mostrar(){
 	} if (btnbezier){
 		drawBezierCurve(av, color.bezier);
 	}
-	//console.log("aa" + btnpoints, btnlines, btnbezier);
 }
 
 function resetScreen(){
@@ -175,7 +159,7 @@ function resetScreen(){
 
 function removeBezier(){
 	for(j in canvas) {
-		assert(width == canvas[j].width && height == canvas[j].height);
+		//assert(width == canvas[j].width && height == canvas[j].height);
 		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
 	}
 	pointsy.splice(0,pointsy.length);
