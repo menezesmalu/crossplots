@@ -78,11 +78,15 @@ function drawPoint(x, y, i){
 canvas[0], addEventListener('mousedown', event =>{
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
-	btnpoints = btnlines = btnbezier = true;
-	if(isInCircle(event) == -1){
-		getPoint(event);
-	} else {
-		move = isInCircle(event);
+	if(x>0 && x <500 && y>0 && y<280){
+		console.log("achou")
+	
+		btnpoints = btnlines = btnbezier = true;
+		if(isInCircle(event) == -1){
+			setPoint(event);
+		} else {
+			move = isInCircle(event);
+		}
 	}
 })
 canvas[0].addEventListener('dblclick', event =>{
@@ -105,22 +109,23 @@ canvas[0].addEventListener('mouseup', function(event) {
     move = -1;
 });
 
-function getPoint(event){
+function setPoint(event){
 	//define the point
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
 	//design the point
-	if(x>0 && x <500 && y>0 && y<280){
+	//if(x>0 && x <500 && y>0 && y<280){
 		var c = drawPoint(x, y,0);
 		points.push(c);
 		if(points.length > 1) 
 			drawLine(points[points.length-1].x, points[points.length-1].y, points[points.length-2].x, points[points.length-2].y, color.lines,0);
 		resetScreen();
-	}
+	//}
 }
 
 function btnClicked(botao){
 	var btn;
+	console.log("aa" + btnpoints, btnlines, btnbezier);
 	switch(botao){
 		case 'btnlines':
 			btn = document.getElementById('poligonal');
@@ -128,20 +133,23 @@ function btnClicked(botao){
 			break;
 		case 'btnpoints':
 			btn = document.getElementById('pontos');
-			btnpoints = !btnpoints;	
+			btnpoints = !btnpoints;
 			break;
 		case 'btnbezier':
 			btn = document.getElementById('bezier');
 			btnbezier = !btnbezier;
-			console.log(btnbezier);
 			break;
 	}
+	console.log("bb" + btnpoints, btnlines, btnbezier);
 	mostrar();	
+	
 }
 function mostrar(){
+	console.log("cc" + btnpoints, btnlines, btnbezier);
 	for(j in canvas)
 		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
 	if(btnlines){
+		console.log("iiih")
 		for(var i=1; i< points.length; i++){
 			drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines,0);
 			drawLine(pointsy[i].x, pointsy[i].y, pointsy[i-1].x, pointsy[i-1].y, color.lines,1);
@@ -156,7 +164,7 @@ function mostrar(){
 	} if (btnbezier){
 		drawBezierCurve(av, color.bezier);
 	}
-
+	//console.log("aa" + btnpoints, btnlines, btnbezier);
 }
 
 function resetScreen(){
@@ -172,8 +180,6 @@ function removeBezier(){
 	}
 	pointsy.splice(0,pointsy.length);
 	pointsx.splice(0,pointsx.length);
-	//var x = width/(2*points.length);
-	//var y = height/(2*points.length);
 	var x = width/(points.length+1);
 	var y = height/(points.length+1);
 	for(var i in points){
@@ -230,7 +236,6 @@ function bezier(t){
 	pcontrolex.push(b2);
 }
 function drawBezierCurve(av, colorpick){
-	console.log(colorpick);
 	for(var i = 1; i < pcontrole.length; i++){
 		drawLine(pcontrole[i-1].x, pcontrole[i-1].y,pcontrole[i].x, pcontrole[i].y, colorpick, 0 );
 		drawLine(pcontroley[i-1].x, pcontroley[i-1].y,pcontroley[i].x, pcontroley[i].y, colorpick, 1 );
