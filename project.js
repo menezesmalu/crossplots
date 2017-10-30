@@ -172,16 +172,18 @@ function removeBezier(){
 	}
 	pointsy.splice(0,pointsy.length);
 	pointsx.splice(0,pointsx.length);
-	var x = width/(2*points.length);
-	var y = height/(2*points.length);
+	//var x = width/(2*points.length);
+	//var y = height/(2*points.length);
+	var x = width/(points.length+1);
+	var y = height/(points.length+1);
 	for(var i in points){
 		var c = drawPoint(points[i].x, points[i].y,0);
 		var cy = drawPoint(x, points[i].y, 1);
 		var cx = drawPoint(points[i].x, y, 2);
 		pointsy.push(cy);
 		pointsx.push(cx);
-		x = x+width/(points.length);
-		y = y+height/(points.length);	
+		x = x+width/(points.length+1);
+		y = y+height/(points.length+1);	
 		if(i > 0) {
 			drawLine(points[i].x, points[i].y, points[i-1].x, points[i-1].y, color.lines, 0);
 			drawLine(pointsy[pointsy.length-1].x, pointsy[pointsy.length-1].y, pointsy[pointsy.length-2].x, pointsy[pointsy.length-2].y, color.lines,1);
