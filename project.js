@@ -70,7 +70,7 @@ function drawPoint(x, y, i){
 	return pnt;
 }
 
-canvas[0], addEventListener('mousedown', event =>{
+canvas[0].addEventListener('mousedown', event =>{
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
 	if(x>0 && x <500 && y>0 && y<280){
@@ -159,7 +159,6 @@ function resetScreen(){
 
 function removeBezier(){
 	for(j in canvas) {
-		//assert(width == canvas[j].width && height == canvas[j].height);
 		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
 	}
 	pointsy.splice(0,pointsy.length);
@@ -182,42 +181,23 @@ function removeBezier(){
 	}
 }
 
-var pot = Math.pow
-function fatorial(n){
-	if(n == 1 || n ==0) return 1;
-	else return n*fatorial(n-1);
-}
-function combinacao(n, i){
-	var a = fatorial(n);
-	var b = fatorial(i);
-	var c = fatorial(n-i);
-	return a/(b*c);
+function deCasteljau(control, i, j, t){
+	if(j == 0) return control[i];
+	var first = deCasteljau(control, i, j-1,t);
+	var second = deCasteljau(control, i+1, j-1,t);
+	return{
+		x: first.x*(1-t) + second.x*t,
+		y: first.y*(1-t) + second.y*t
+	}
 }
 function bezier(t){
-	var x0 = 0;
-	var y0 = 0;
-	var x1 = 0
-	var y1 = 0;
-	var x2 = 0
-	var y2 = 0;
-	for(var i = 0; i < points.length; i++){
-		var comb = combinacao(points.length-1, i);
-		x0 = x0 + (comb)*pot((1-t), points.length-i-1)*pot(t,i)*points[i].x;
-		y0 = y0 + (comb)*pot((1-t), points.length-i-1)*pot(t,i)*points[i].y;
+	var bezieru = deCasteljau(points,0,points.length-1,t);
+	var beziery = deCasteljau(pointsy,0,pointsy.length-1,t);
+	var bezierx = deCasteljau(points,0,points.length-1,t);
 
-		x1 = x1 + (comb)*pot((1-t), pointsy.length-i-1)*pot(t,i)*pointsy[i].x;
-		y1 = y1 + (comb)*pot((1-t), pointsy.length-i-1)*pot(t,i)*pointsy[i].y;
-
-		x2 = x2 + (comb)*pot((1-t), pointsx.length-i-1)*pot(t,i)*pointsx[i].x;
-		y2 = y2 + (comb)*pot((1-t), pointsx.length-i-1)*pot(t,i)*pointsx[i].y;
-	}
-	var b0 = {x: x0, y: y0}
-	var b1 = {x: x1, y:y1};
-	var b2 = {x: x2, y: y2}
-
-	pcontrole.push(b0);	
-	pcontroley.push(b1);	
-	pcontrolex.push(b2);
+	pcontrole.push(bezieru);	
+	pcontroley.push(beziery);	
+	pcontrolex.push(bezierx);
 }
 function drawBezierCurve(av, colorpick){
 	for(var i = 1; i < pcontrole.length; i++){
