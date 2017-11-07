@@ -73,13 +73,11 @@ function drawPoint(x, y, i){
 canvas[0].addEventListener('mousedown', event =>{
 	var x = event.x - rect[0].left;
 	var y = event.y - rect[0].top;
-	if(x>0 && x <500 && y>0 && y<280){
-		btnpoints = btnlines = btnbezier = true;
-		if(isInCircle(event) == -1){
-			setPoint(event);
-		} else {
-			move = isInCircle(event);
-		}
+	btnpoints = btnlines = btnbezier = true;
+	if(isInCircle(event) == -1){
+		setPoint(event);
+	} else {
+		move = isInCircle(event);
 	}
 })
 canvas[0].addEventListener('dblclick', event =>{
@@ -147,17 +145,17 @@ function mostrar(){
 			c = drawPoint(pointsx[i].x, pointsx[i].y,2);
 		}
 	} if (btnbezier){
-		drawBezierCurve(av, color.bezier);
+		drawBezier(av, color.bezier);
 	}
 }
 
 function resetScreen(){
-	removeBezier();
+	drawPointsAndLines();
 	getBezier();
 }
 
 
-function removeBezier(){
+function drawPointsAndLines(){
 	for(j in canvas) {
 		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
 	}
@@ -199,7 +197,7 @@ function bezier(t){
 	pcontroley.push(beziery);	
 	pcontrolex.push(bezierx);
 }
-function drawBezierCurve(av, colorpick){
+function drawBezier(av, colorpick){
 	for(var i = 1; i < pcontrole.length; i++){
 		drawLine(pcontrole[i-1].x, pcontrole[i-1].y,pcontrole[i].x, pcontrole[i].y, colorpick, 0 );
 		drawLine(pcontroley[i-1].x, pcontroley[i-1].y,pcontroley[i].x, pcontroley[i].y, colorpick, 1 );
@@ -214,10 +212,10 @@ function getBezier(){
 	for(var i = 0; i <= av; i++){
 		bezier(i/av);
 	}
-	drawBezierCurve(av, color.bezier);
+	drawBezier(av, color.bezier);
 }
 
 function changeBezier(){
-	removeBezier();
+	drawPointsAndLines();
 	getBezier();
 }
