@@ -191,7 +191,7 @@ function deCasteljau(control, i, j, t){
 function bezier(t){
 	var bezieru = deCasteljau(points,0,points.length-1,t);
 	var beziery = deCasteljau(pointsy,0,pointsy.length-1,t);
-	var bezierx = deCasteljau(points,0,points.length-1,t);
+	var bezierx = deCasteljau(pointsx,0,points.length-1,t);
 
 	pcontrole.push(bezieru);	
 	pcontroley.push(beziery);	
