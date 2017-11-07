@@ -23,6 +23,9 @@ var points = [];
 var pointsy = [];
 var pointsx = [];
 var pcontrole = [];
+var deCasteljaup = [];
+var deCasteljauy = [];
+var deCasteljaux = [];
 var pcontroley = [];
 var pcontrolex = [];
 var circleRadius = 5;
@@ -178,20 +181,27 @@ function drawPointsAndLines(){
 		}
 	}
 }
-
+var state = []; //array que vai armazenar os calculados
 function deCasteljau(control, i, j, t){
-	if(j == 0) return control[i];
+	var memory = "i:" + i + "j:" + j; //é indexado por strings (map) e a string é unificada com o uso do i e j da chamada
+	if(state[memory]) return state[memory] //se nao tiver vazio, retorna esse valor
+	else if(j == 0) return state[memory] = control[i]; //se tiver vazio, mas chegar na ultima linha, coloca o ponto de controle daquela base 
+	//para outros valores de j, calcula o de casteljau através da fórmula
 	var first = deCasteljau(control, i, j-1,t);
 	var second = deCasteljau(control, i+1, j-1,t);
-	return{
+	return state[memory] = { 
 		x: first.x*(1-t) + second.x*t,
 		y: first.y*(1-t) + second.y*t
 	}
 }
+
 function bezier(t){
+	state = [];
 	var bezieru = deCasteljau(points,0,points.length-1,t);
+	state = [];
 	var beziery = deCasteljau(pointsy,0,pointsy.length-1,t);
-	var bezierx = deCasteljau(pointsx,0,points.length-1,t);
+	state = [];
+	var bezierx = deCasteljau(pointsx,0,pointsx.length-1,t);
 
 	pcontrole.push(bezieru);	
 	pcontroley.push(beziery);	
