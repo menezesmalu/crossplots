@@ -158,6 +158,14 @@ function resetScreen(){
 }
 
 
+function drawBezier(av, colorpick){
+	for(var i = 1; i < pcontrole.length; i++){
+		drawLine(pcontrole[i-1].x, pcontrole[i-1].y,pcontrole[i].x, pcontrole[i].y, colorpick, 0 );
+		drawLine(pcontroley[i-1].x, pcontroley[i-1].y,pcontroley[i].x, pcontroley[i].y, colorpick, 1 );
+		drawLine(pcontrolex[i-1].x, pcontrolex[i-1].y,pcontrolex[i].x, pcontrolex[i].y, colorpick, 2 );
+	}
+}
+
 function drawPointsAndLines(){
 	for(j in canvas) {
 		ctx[j].clearRect(0, 0, canvas[j].width, canvas[j].height);
@@ -181,39 +189,33 @@ function drawPointsAndLines(){
 		}
 	}
 }
-var state = []; //array que vai armazenar os calculados
-function deCasteljau(control, i, j, t){
-	var memory = "i:" + i + "j:" + j; //é indexado por strings (map) e a string é unificada com o uso do i e j da chamada
-	if(state[memory]) return state[memory] //se nao tiver vazio, retorna esse valor
-	else if(j == 0) return state[memory] = control[i]; //se tiver vazio, mas chegar na ultima linha, coloca o ponto de controle daquela base 
-	//para outros valores de j, calcula o de casteljau através da fórmula
-	var first = deCasteljau(control, i, j-1,t);
-	var second = deCasteljau(control, i+1, j-1,t);
-	return state[memory] = { 
-		x: first.x*(1-t) + second.x*t,
-		y: first.y*(1-t) + second.y*t
+var temp;
+function deCasteljau(control, t){
+	temp = control.slice();
+	var tempLength = temp.length;
+	while(tempLength > 1){
+		for(var i = 0; i < tempLength -1; i++){
+			temp[i] = {
+				x: temp[i].x*(1-t) + temp[i+1].x*t,
+				y: temp[i].y*(1-t) + temp[i+1].y*t
+			}
+		}
+		tempLength -= 1;
 	}
+	return temp[0];
 }
 
 function bezier(t){
-	state = [];
-	var bezieru = deCasteljau(points,0,points.length-1,t);
-	state = [];
-	var beziery = deCasteljau(pointsy,0,pointsy.length-1,t);
-	state = [];
-	var bezierx = deCasteljau(pointsx,0,pointsx.length-1,t);
+	var bezieru = deCasteljau(points,t);
+	var beziery = deCasteljau(pointsy,t);
+	var bezierx = deCasteljau(pointsx,t);
 
 	pcontrole.push(bezieru);	
 	pcontroley.push(beziery);	
 	pcontrolex.push(bezierx);
 }
-function drawBezier(av, colorpick){
-	for(var i = 1; i < pcontrole.length; i++){
-		drawLine(pcontrole[i-1].x, pcontrole[i-1].y,pcontrole[i].x, pcontrole[i].y, colorpick, 0 );
-		drawLine(pcontroley[i-1].x, pcontroley[i-1].y,pcontroley[i].x, pcontroley[i].y, colorpick, 1 );
-		drawLine(pcontrolex[i-1].x, pcontrolex[i-1].y,pcontrolex[i].x, pcontrolex[i].y, colorpick, 2 );
-	}
-}
+
+
 function getBezier(){
 	pcontrole.splice(0, pcontrole.length);
 	pcontroley.splice(0, pcontroley.length);
